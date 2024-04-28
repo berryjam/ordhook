@@ -32,7 +32,7 @@ pub async fn scan_bitcoin_chainstate_via_rpc_using_predicate(
     event_observer_config_override: Option<&EventObserverConfig>,
     ctx: &Context,
 ) -> Result<(), String> {
-    let _ = download_ordinals_dataset_if_required(config, ctx).await;
+    // let _ = download_ordinals_dataset_if_required(config, ctx).await;
 
     let auth = Auth::UserPass(
         config.network.bitcoind_rpc_username.clone(),
@@ -92,15 +92,15 @@ pub async fn scan_bitcoin_chainstate_via_rpc_using_predicate(
     let http_client = build_http_client();
 
     while let Some(current_block_height) = block_heights_to_scan.pop_front() {
-        let mut inscriptions_db_conn =
-            open_readonly_ordhook_db_conn(&config.expected_cache_path(), ctx)?;
-
-        number_of_blocks_scanned += 1;
-
-        if !get_any_entry_in_ordinal_activities(&current_block_height, &inscriptions_db_conn, &ctx)
-        {
-            continue;
-        }
+        // let mut inscriptions_db_conn =
+        //     open_readonly_ordhook_db_conn(&config.expected_cache_path(), ctx)?;
+        //
+        // number_of_blocks_scanned += 1;
+        //
+        // if !get_any_entry_in_ordinal_activities(&current_block_height, &inscriptions_db_conn, &ctx)
+        // {
+        //     continue;
+        // }
 
         let block_hash = retrieve_block_hash_with_retry(
             &http_client,
@@ -127,15 +127,15 @@ pub async fn scan_bitcoin_chainstate_via_rpc_using_predicate(
             }
         };
 
-        {
-            let inscriptions_db_tx = inscriptions_db_conn.transaction().unwrap();
-            consolidate_block_with_pre_computed_ordinals_data(
-                &mut block,
-                &inscriptions_db_tx,
-                true,
-                &Context::empty(),
-            );
-        }
+        // {
+        //     let inscriptions_db_tx = inscriptions_db_conn.transaction().unwrap();
+        //     consolidate_block_with_pre_computed_ordinals_data(
+        //         &mut block,
+        //         &inscriptions_db_tx,
+        //         true,
+        //         &Context::empty(),
+        //     );
+        // }
 
         let inscriptions_revealed = get_inscriptions_revealed_in_block(&block)
             .iter()

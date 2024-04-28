@@ -149,6 +149,7 @@ pub fn parse_inscriptions_in_raw_tx(
                 parse_inscriptions_from_witness(input_index, witness_bytes, &tx.txid)
             {
                 for inscription in inscriptions.into_iter() {
+                    println!("Parsing inscriptions for txid: {} inscription:{:?}", tx.txid, inscription.clone());
                     operations.push(OrdinalOperation::InscriptionRevealed(inscription));
                 }
             }
